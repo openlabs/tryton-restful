@@ -8,8 +8,10 @@
 import math
 import base64
 import unittest
+from datetime import datetime
+from decimal import Decimal
 
-import simplejson as json
+from flask import json, jsonify
 
 from trytond import security
 import trytond.tests.test_tryton
@@ -249,6 +251,18 @@ class TestRestfulApi(unittest.TestCase):
                 headers={'Authorization': 'an-invalid-session'}
             )
             self.assertEqual(result.status_code, 302)
+
+    def test_json_encoding(self):
+        """
+        Ensure that the json encoding is tryton style
+        """
+        with app.test_request_context('/'):
+            value = {
+                u'dt': datetime(2014, 5, 10, 16, 47, 26),
+                u'num': Decimal('10.12345'),
+            }
+            dump = jsonify(value).data
+            self.assertEqual(json.loads(dump), value)
 
 
 def suite():
