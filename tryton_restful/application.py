@@ -225,7 +225,8 @@ def collection(model):
         return jsonify({}), 205
 
 
-@restful.route('/model/<model>/<record_id>', methods=['GET', 'PUT', 'DELETE'])
+@restful.route('/model/<model>/<int:record_id>',
+               methods=['GET', 'PUT', 'DELETE'])
 @TrytonAuth.login_required
 @transaction
 def element(model, record_id):
