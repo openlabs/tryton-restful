@@ -6,22 +6,26 @@
     :license: BSD, see LICENSE for more details.
 """
 import traceback
-from functools import wraps
+from functools import wraps, partial
 
 from flask import (
     Flask, Blueprint, request, jsonify, current_app, Response,
-    g, url_for, redirect)
-import simplejson as json
+    g, url_for, redirect, json)
 from trytond import backend, security
 from trytond.pool import Pool
 from trytond.cache import Cache
 from trytond.config import CONFIG
 from trytond.exceptions import UserError
 from trytond.transaction import Transaction
+from trytond.protocols.jsonrpc import JSONEncoder, object_hook
 
 restful = Blueprint('restful', __name__)
 
 app = Flask(__name__)
+
+
+app.json_decoder = partial(json.JSONDecoder, object_hook=object_hook)
+app.json_encoder = JSONEncoder
 
 
 def after_this_request(f):
@@ -221,7 +225,8 @@ def collection(model):
         return jsonify({}), 205
 
 
-@restful.route('/model/<model>/<record_id>', methods=['GET', 'PUT', 'DELETE'])
+@restful.route('/model/<model>/<int:record_id>',
+               methods=['GET', 'PUT', 'DELETE'])
 @TrytonAuth.login_required
 @transaction
 def element(model, record_id):
