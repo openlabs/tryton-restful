@@ -3,6 +3,12 @@ Tryton Restful
 
 A REST API for Tryton Models
 
+.. image:: https://travis-ci.org/openlabs/tryton-restful.png?branch=develop
+  :target: https://travis-ci.org/openlabs/tryton-restful
+
+.. image:: https://coveralls.io/repos/openlabs/tryton-restful/badge.png
+  :target: https://coveralls.io/r/openlabs/tryton-restful
+
 Installation
 ------------
 
