@@ -1,0 +1,5 @@
+[run]
+source = tryton_restful
+
+[report]
+omit = */tests/*, */fabfile.py
